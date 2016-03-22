@@ -12,15 +12,15 @@ public class Route {
     int x;
     int y;
 
-    public Route(int y, int x, int lon, int lar){
+    public Route(int y, int x, int lon, int lar) {
         this.longueur = lon;
         this.largeur = lar;
         this.x = x;
-        this.y=y;
+        this.y = y;
     }
 
     public void dessinerRoute(Graphics contexteGraphique) {
         contexteGraphique.fillRect(y, x, longueur, largeur);
-        //contexteGraphique.fillRect(250, 0, 35, 505);
+        contexteGraphique.fillRect(250, 295, largeur, 250);
     }
 }

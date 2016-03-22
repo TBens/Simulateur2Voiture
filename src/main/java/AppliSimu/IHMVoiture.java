@@ -1,36 +1,18 @@
 package AppliSimu;
 
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Panel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import DomaineVoiture.Voiture;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
+public class IHMVoiture extends JFrame implements Observer {
 
-import DomaineVoiture.Voiture;
-
-public class IHMVoiture extends JFrame implements Observer{
-
-	private double paramatreConversionMetresPixels = 0.5;
-	private Voiture maVoiture;
-	private CommandeVoiture maCommandeVoiture;
+    private double paramatreConversionMetresPixels = 0.5;
+    private Voiture maVoiture;
+    private CommandeVoiture maCommandeVoiture;
     private Route maRoute;
-	
-	private void initGraphique() {
-		this.setTitle("Simulateur de Voiture");
-		this.setSize(505, 505);
-
-		this.maCommandeVoiture = new CommandeVoiture(this, maVoiture);
-
-		this.setVisible(true);
-	}
 
     public IHMVoiture(Voiture maVoiture) {
         super();
@@ -39,47 +21,56 @@ public class IHMVoiture extends JFrame implements Observer{
         initGraphique();
     }
 
-	public IHMVoiture(Voiture maVoiture, Route maRoute) {
-		super();
-		this.maVoiture = maVoiture;
-		maVoiture.addObserver(this);
+    public IHMVoiture(Voiture maVoiture, Route maRoute) {
+        super();
+        this.maVoiture = maVoiture;
+        maVoiture.addObserver(this);
         initGraphique();
         this.maRoute = maRoute;
-	}
+    }
 
-	public IHMVoiture() {
-		super();
-		initGraphique();
-		this.maVoiture = null;
-	}
-	
-	public int calculerPositionPixels(int xMetres) {
-		return (int) (paramatreConversionMetresPixels * xMetres);	
-	}
+    public IHMVoiture() {
+        super();
+        initGraphique();
+        this.maVoiture = null;
+    }
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		this.repaint();
-	}
+    private void initGraphique() {
+        this.setTitle("Simulateur de Voiture");
+        this.setSize(505, 505);
 
-	@Override
-	public void paint(Graphics contexteGraphique) {
-		super.paint(contexteGraphique);
+        this.maCommandeVoiture = new CommandeVoiture(this, maVoiture);
+
+        this.setVisible(true);
+    }
+
+    public int calculerPositionPixels(int xMetres) {
+        return (int) (paramatreConversionMetresPixels * xMetres);
+    }
+
+    @Override
+    public void update(Observable arg0, Object arg1) {
+        this.repaint();
+    }
+
+    @Override
+    public void paint(Graphics contexteGraphique) {
+        super.paint(contexteGraphique);
         contexteGraphique.setColor(Color.blue);
         maRoute.dessinerRoute(contexteGraphique);
-		contexteGraphique.setColor(Color.red);
-		dessinerVoiture(contexteGraphique);
+        contexteGraphique.setColor(Color.red);
+        dessinerVoiture(contexteGraphique);
 
-	}
+    }
 
 
-	private void dessinerVoiture(Graphics contexteGraphique) {
-		int xMetres = maVoiture.getX();
-		int xPixel = calculerPositionPixels(xMetres);
+    private void dessinerVoiture(Graphics contexteGraphique) {
+        int xMetres = maVoiture.getX();
+        int xPixel = calculerPositionPixels(xMetres);
         int yMetres = maVoiture.getY();
         int yPixel = calculerPositionPixels(yMetres);
 
-		contexteGraphique.fillRect(xPixel, yPixel, 30, 15);
-	}
+        contexteGraphique.fillRect(xPixel, yPixel, maVoiture.getLongueur(), maVoiture.getLargeur());
+    }
 
 }
