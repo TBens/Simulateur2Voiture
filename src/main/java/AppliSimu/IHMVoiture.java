@@ -21,6 +21,7 @@ public class IHMVoiture extends JFrame implements Observer{
 	private double paramatreConversionMetresPixels = 0.5;
 	private Voiture maVoiture;
 	private CommandeVoiture maCommandeVoiture;
+    private Route maRoute;
 	
 	private void initGraphique() {
 		this.setTitle("Simulateur de Voiture");
@@ -30,12 +31,20 @@ public class IHMVoiture extends JFrame implements Observer{
 
 		this.setVisible(true);
 	}
-	
-	public IHMVoiture(Voiture maVoiture) {
+
+    public IHMVoiture(Voiture maVoiture) {
+        super();
+        this.maVoiture = maVoiture;
+        maVoiture.addObserver(this);
+        initGraphique();
+    }
+
+	public IHMVoiture(Voiture maVoiture, Route maRoute) {
 		super();
 		this.maVoiture = maVoiture;
 		maVoiture.addObserver(this);
-		initGraphique();
+        initGraphique();
+        this.maRoute = maRoute;
 	}
 
 	public IHMVoiture() {
@@ -57,7 +66,7 @@ public class IHMVoiture extends JFrame implements Observer{
 	public void paint(Graphics contexteGraphique) {
 		super.paint(contexteGraphique);
         contexteGraphique.setColor(Color.blue);
-        dessinerRoute(contexteGraphique);
+        maRoute.dessinerRoute(contexteGraphique);
 		contexteGraphique.setColor(Color.red);
 		dessinerVoiture(contexteGraphique);
 
@@ -73,9 +82,4 @@ public class IHMVoiture extends JFrame implements Observer{
 		contexteGraphique.fillRect(xPixel, yPixel, 30, 15);
 	}
 
-    private void dessinerRoute(Graphics contexteGraphique) {
-        contexteGraphique.fillRect(0, 295, 505, 35);
-        contexteGraphique.fillRect(250, 0, 35, 505);
-    }
-	
 }
